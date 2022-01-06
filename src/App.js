@@ -1,11 +1,25 @@
 import React from "react";
-import io from "socket.io-client";
-const App = () => {
-  const hadleClick = () => {
-    io("http://localhost:3000");
-  };
+import JoinBlock from "./components/JoinBlock";
+import reducer from "./reducer";
+// import socket from "./socket";
+import "./style.css";
 
-  return <button onClick={hadleClick}>Connect</button>;
+const App = () => {
+  const [state, dispatch] = React.useReducer(reducer, {
+    isJoined: false,
+  });
+
+  const onLogin = () => {
+    dispatch({
+      type: "JOINED",
+      payload: true,
+    });
+  };
+  return (
+    <div className="container">
+      {!state.isJoined && <JoinBlock onLogin={onLogin} />}
+    </div>
+  );
 };
 
 export default App;
