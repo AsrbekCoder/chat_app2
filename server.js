@@ -9,17 +9,23 @@ app.use(express.json());
 
 let room = new Map();
 
-app.get("/rooms", (req, res) => {
-  res.json(room);
-});
+app.get("/rooms/:id", (req, res) => {
+  const { id: roomId } = req.params;
+  const obj = room.has(roomId)
+    ? {
+        users: [...room.get(roomId).get("users").values()],
+        massages: [...room.get(roomId).get("massages").values()],
+      }
+    : {
+        users: [],
+        massages: [],
+      };
 
-io.on("connection", (socket) => {
-  console.log("user", socket.id);
+  res.json(obj);
 });
 
 app.post("/rooms", (req, res) => {
-  const { roomId, userName } = req.body;
-
+  const { roomId, userName } = req.body.obj;
   if (!room.has(roomId)) {
     room.set(
       roomId,
@@ -29,8 +35,27 @@ app.post("/rooms", (req, res) => {
       ])
     );
   }
-
   res.send();
+});
+io.on("connection", (socket) => {
+  console.log("user", socket.id);
+
+  socket.on("ROOM:JOIN", ({ roomId, userName }) => {
+    socket.join(roomId);
+    room.get(roomId).get("users").set(socket.id, userName);
+    let users = [...room.get(roomId).get("users").values()];
+
+    socket.to(roomId).emit("ROOM:JOINED", users);
+  });
+
+  socket.on("disconnect", () => {
+    room.forEach((value, roomId) => {
+      if (value.get("users").delete(socket.id)) {
+        let users = [...value.get("users").values()];
+        socket.to(roomId).emit("ROOM:JOINED", users);
+      }
+    });
+  });
 });
 
 server.listen(9999, (err) => {

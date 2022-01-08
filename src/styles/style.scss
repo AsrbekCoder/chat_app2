@@ -1,8 +1,19 @@
+@import "./massagePage.scss";
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
+@mixin flexBox() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+$btnColor_inactive: #4caf50;
+$btnColor_active: #43a047;
+
 body {
   background: #76b852; /* fallback for old browsers */
   background: -webkit-linear-gradient(right, #76b852, #8dc26f);
@@ -15,9 +26,7 @@ body {
 }
 
 .login_box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flexBox();
   height: 100vh;
 }
 
@@ -28,25 +37,24 @@ body {
   padding: 45px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-}
-
-input {
-  font-family: "Roboto", sans-serif;
-  outline: 0;
-  background: #f2f2f2;
-  width: 100%;
-  border: 0;
-  margin: 0 0 15px;
-  padding: 15px;
-  box-sizing: border-box;
-  font-size: 14px;
+  input {
+    font-family: "Roboto", sans-serif;
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
 }
 
 button {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #4caf50;
+  background: $btnColor_inactive;
   width: 100%;
   border: 0;
   padding: 15px;
@@ -54,8 +62,8 @@ button {
   font-size: 14px;
   transition: 0.4s;
   cursor: pointer;
-}
-button:hover,
-button:focus {
-  background: #43a047;
+  &:hover,
+  &:focus {
+    background: $btnColor_active;
+  }
 }

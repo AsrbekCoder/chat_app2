@@ -6,15 +6,18 @@ const JoinBlock = ({ onLogin }) => {
   const [userName, setUserName] = React.useState("");
   const [isLoading, setLoading] = React.useState(false);
 
+  const obj = {
+    roomId,
+    userName,
+  };
   const hadleClick = async () => {
     if (!roomId || !userName) return alert(" Room Id or User not dound");
 
     setLoading(true);
     await axios.post("/rooms", {
-      roomId,
-      userName,
+      obj,
     });
-    onLogin();
+    onLogin(obj);
   };
   return (
     <div className="login_box">
