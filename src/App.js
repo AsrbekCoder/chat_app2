@@ -12,8 +12,9 @@ const App = () => {
     isJoined: false,
     roomId: null,
     userName: null,
+    masagging: null,
     users: [],
-    messages: [],
+    massages: [],
   });
 
   const setUsers = (obj) => {
@@ -29,21 +30,27 @@ const App = () => {
     });
     socket.emit("ROOM:JOIN", obj);
     const { data } = await axios.get(`/rooms/${obj.roomId}`);
-    console.log("work", data);
     setUsers(data.users);
+  };
+
+  const onMassage = (obj) => {
+    dispatch({
+      type: "MASSAGE",
+      payload: obj,
+    });
+    console.log(state);
   };
 
   React.useEffect(() => {
     socket.on("ROOM:JOINED", setUsers);
   }, []);
-
   window.socket = socket;
   return (
     <>
       {!state.isJoined ? (
         <JoinBlock onLogin={onLogin} />
       ) : (
-        <TextMassage {...state} />
+        <TextMassage {...state} onMassage={onMassage} />
       )}
     </>
   );

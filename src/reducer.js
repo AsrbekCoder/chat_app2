@@ -12,6 +12,11 @@ export default (state, action) => {
         ...state,
         users: action.payload,
       };
+    case "MASSAGE":
+      return {
+        ...state,
+        masagging: action.payload,
+      };
 
     default:
       return state;

@@ -1,20 +1,14 @@
 import React from "react";
 
 const UsersPage = ({ usersAll }) => {
-  const { users } = usersAll;
-  console.log(users);
+  const { users, userName } = usersAll;
   return (
-    <div className="col-md-4 border-right">
+    <div className="col-md-4 border-right main_fix">
       <div className="settings-tray">
-        <img
-          className="profile-image"
-          src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/filip.jpg"
-          alt="Profile img"
-        />
+        <span>{userName}</span>
         <span className="settings-tray--right">
           <i className="far fa-comment-dots"></i>
           <i className="fas fa-bars"></i>
-          <p>{users.length}</p>
         </span>
       </div>
       <div className="search-box">
