@@ -43,7 +43,7 @@ $blue: #4caf50;
 }
 .text_massage {
   position: relative;
-
+  overflow: hidden;
   height: 80vh;
 }
 .text_input {
@@ -153,7 +153,7 @@ hr {
   margin: 10px 30px;
   border-radius: 9px;
   position: relative;
-  animation: fadeIn 1s ease-in;
+  animation: fadeIn 0.2s ease-in;
 
   &:after {
     content: "";

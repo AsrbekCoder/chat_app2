@@ -7,15 +7,27 @@ export default (state, action) => {
         roomId: action.payload.roomId,
         userName: action.payload.userName,
       };
+
+    case "SET_DATA":
+      return {
+        ...state,
+        users: action.payload.users,
+        messages: action.payload.messages,
+      };
     case "SET_USERS":
       return {
         ...state,
         users: action.payload,
       };
-    case "MASSAGE":
+    case "NEW_MESSAGE":
       return {
         ...state,
-        masagging: action.payload,
+        messages: [...state.messages, action.payload],
+      };
+    case "MY_MESSAGES":
+      return {
+        ...state,
+        messagingMy: [...state.messagingMy, action.payload],
       };
 
     default:

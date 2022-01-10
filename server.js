@@ -14,11 +14,11 @@ app.get("/rooms/:id", (req, res) => {
   const obj = room.has(roomId)
     ? {
         users: [...room.get(roomId).get("users").values()],
-        massages: [...room.get(roomId).get("massages").values()],
+        messages: [...room.get(roomId).get("messages").values()],
       }
     : {
         users: [],
-        massages: [],
+        messages: [],
       };
 
   res.json(obj);
@@ -31,7 +31,7 @@ app.post("/rooms", (req, res) => {
       roomId,
       new Map([
         ["users", new Map()],
-        ["massages", []],
+        ["messages", []],
       ])
     );
   }
@@ -39,13 +39,23 @@ app.post("/rooms", (req, res) => {
 });
 io.on("connection", (socket) => {
   console.log("user", socket.id);
-
   socket.on("ROOM:JOIN", ({ roomId, userName }) => {
     socket.join(roomId);
     room.get(roomId).get("users").set(socket.id, userName);
     let users = [...room.get(roomId).get("users").values()];
 
     socket.to(roomId).emit("ROOM:JOINED", users);
+  });
+
+  socket.on("ROOM:NEW_MESSAGES", ({ roomId, userName, text }) => {
+    const obj = {
+      userName,
+      text,
+    };
+
+    room.get(roomId).get("messages")?.push(obj);
+
+    socket.to(roomId).emit("ROOM:ADD_MESSAGES", obj);
   });
 
   socket.on("disconnect", () => {
