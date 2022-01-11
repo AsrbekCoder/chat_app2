@@ -4,7 +4,13 @@ const { Server } = require("socket.io");
 const app = express();
 const server = require("http").Server(app);
 
-const io = new Server(server);
+app.use(require("cors")());
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:4200",
+    methods: ["GET", "POST"],
+  },
+});
 app.use(express.json());
 
 let room = new Map();

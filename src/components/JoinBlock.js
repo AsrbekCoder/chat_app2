@@ -34,6 +34,11 @@ const JoinBlock = ({ onLogin }) => {
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
         />
+        <input
+          type="file"
+          placeholder="User Name"
+          onChange={(e) => console.log(e)}
+        />
         <button disabled={isLoading} onClick={hadleClick}>
           {!isLoading ? "Join" : "Joining..."}
         </button>
